@@ -1,0 +1,13 @@
+{
+  "name": "PopGift",
+  "version": "1.0.0",
+  "description": "For topcoders",
+  "main": "index.js",
+  "author": "jiojiajiu",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
