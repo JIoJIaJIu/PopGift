@@ -1,0 +1,21 @@
+{
+  "name": "PopGift",
+  "version": "0.0.0",
+  "homepage": "https://github.com/JIoJIaJIu/PopGift",
+  "authors": [
+    "Guro Bokum <jiojiajiu@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.2.28",
+    "angular-route": "1.2.28"
+  }
+}
