@@ -47,6 +47,9 @@ gulp.task('static', function () {
 
     gulp.src('frontend/images/**')
         .pipe(gulp.dest(path.join(OUTPUT, 'i')) );
+
+    gulp.src('frontend/data/**')
+        .pipe(gulp.dest(path.join(OUTPUT, 'data')) );
 });
 
 gulp.task('watch', function () {
