@@ -14,6 +14,8 @@ function ($scope, $location, $rootScope, $log, formUtils, signUp) {
         headless: true
     });
 
+    $scope.validateErrorMsg = '';
+
     $scope.requiredFields = {
         firstName: {
             fieldName: 'firstName',
@@ -38,46 +40,55 @@ function ($scope, $location, $rootScope, $log, formUtils, signUp) {
     };
 
     $scope.submit = function () {
-        $log.info('Submitting..');
+        $log.debug('Submitting..');
 
         if (!validate()) {
             $log.warn('Form is not valid');
             return;
         }
 
+        // See NOTICE #1
         var q = signUp.champion({
-           name: formUtils.getFullName($scope),
-           email: $scope.email,
-           password: $scope.password,
+            firstName: $scope.firstName,
+            lastName: $scope.lastName,
+            email: $scope.mail,
+            password: $scope.password,
+            interest: $scope.interest
         });
 
-        q.success = function () {
-        }
-
-        q.error = function () {
-        }
+        q.then(function () {
+            $log.debug('Successuf registered');
+            $location.path('/');
+        }, function (err) {
+            $log.debug('Request error', err);
+            $scope.validateErrorMsg = err;
+            $scope.showError = true;
+        });
     };
 
     $scope.toggleAcceptTerms = function () {
         $scope.isAcceptTerms = !$scope.isAcceptTerms;
     };
 
+    $scope.matchPasswords = false;
+
     function validate () {
         var valid = formUtils.validateRequired($scope, $scope.signUpForm);
         if (!valid)
             return valid;
 
-        valid = formUtils.matchPasswords($scope) && valid;
+        $scope.matchPasswords = formUtils.matchPasswords($scope);
+        valid = $scope.matchPasswords && valid;
         if (!valid)
             return valid;
 
         if ($scope.signUpForm.mail.$dirty && $scope.signUpForm.mail.$invalid) {
-            $scope.validateErrorMsg += 'Email is invalid.';
+            $scope.validateErrorMsg = [$scope.validateErrorMsg, 'Email is invalid.'].join(' ');
             return false;
         }
 
         $scope.afterClickRegister = true;
-        return false;
+        return true;
     };
     $scope.looseFocus = formUtils.looseFocus;
 
