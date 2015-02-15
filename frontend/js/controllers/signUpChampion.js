@@ -1,13 +1,14 @@
 (function (undefined) {
 'use strict';
 
-appControllers.controller('signUpChampionCtrl', [
+angular.module('MomAndPop').controller('signUpChampionCtrl', [
     '$scope',
     '$location',
     '$rootScope',
     '$log',
     'formUtils',
-function ($scope, $location, $rootScope, $log, formUtils) {
+    'signUp',
+function ($scope, $location, $rootScope, $log, formUtils, signUp) {
 
     $scope.resetGlobal({
         headless: true
@@ -37,11 +38,23 @@ function ($scope, $location, $rootScope, $log, formUtils) {
     };
 
     $scope.submit = function () {
-        $log.log('Submitting..');
+        $log.info('Submitting..');
 
         if (!validate()) {
-            $log.log('Form is not valid');
+            $log.warn('Form is not valid');
             return;
+        }
+
+        var q = signUp.champion({
+           name: formUtils.getFullName($scope),
+           email: $scope.email,
+           password: $scope.password,
+        });
+
+        q.success = function () {
+        }
+
+        q.error = function () {
         }
     };
 
