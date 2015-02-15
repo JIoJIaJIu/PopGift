@@ -6,7 +6,7 @@ var config = {
      * e.g. http://host.com/momandpop/
      *
      **/
-    REST_SERVICE_BASE_URL: 'http://localhost:4040/',
+    REST_SERVICE_BASE_URL: 'http://localhost:4040',
 
     /**
      * This is the message template for the friend invitation email.
@@ -53,9 +53,6 @@ var config = {
     SESSION_TOKEN_REFRESH_PERIOD: null
 }
 
-var module = angular.module('MomAndPop.config', []);
-$.each(config, function (value, key) {
-    module.constant(key, value);
-});
+angular.module('MomAndPop.config', []).constant('CONFIG', config);
 
 })();
