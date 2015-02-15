@@ -2,9 +2,9 @@
 
 angular.module('MomAndPop').service('signUp', [
     '$http',
-    'MomAndPop.config',
     'utils',
-function ($http, config, utils) {
+function ($http, utils) {
+    var config = angular.module('MomAndPop.config');
     var URL = utils.pathJoin(config.REST_SERVICES_BASE_URL, 'register');
 
     this.champion = function (params) {
