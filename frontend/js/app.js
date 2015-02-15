@@ -90,7 +90,24 @@ var app = angular
 
 
 // Initialize the main module
-app.run(['$rootScope', '$location', '$window', function ($rootScope, $location,  $window) {
+app.run(['$rootScope', '$location', '$window', '$log', function ($rootScope, $location, $window, $log) {
+    var config = angular.module('MomAndPop.config');
+    $log.info('FB init');
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '319366818273535',
+            xfbml      : true,
+            version    : 'v2.1'
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
 /*
     $rootScope.location = $location;
     $rootScope.goto = function (path) {

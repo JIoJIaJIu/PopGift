@@ -5,5 +5,5 @@
 * npm install
 * gulp
 * cd _server
-* nmp install
+* npm install
 * node app.js
