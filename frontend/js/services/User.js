@@ -42,8 +42,8 @@ function ($log, $q, utils, CONFIG) {
             d.resolve(data);
         });
 
-        q.error(function (err) {
-            d.reject(err);
+        q.error(function (res) {
+            d.reject(res.error);
         });
 
         return d;
@@ -80,8 +80,8 @@ function ($log, $q, utils, CONFIG) {
             d.resolve(data);
         });
 
-        q.error(function (err) {
-            d.reject(err);
+        q.error(function (res) {
+            d.reject(res.error);
         });
 
         return d.promise;

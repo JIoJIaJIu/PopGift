@@ -40,14 +40,18 @@ function ($http, utils, $log, $q, config) {
             email: params.email,
             password: params.password,
             interestedOfferCategory: params.interest || null
+        }, {
+            headers: {
+                //'Content-type': 'multipart/form-data'
+            }
         });
 
         q.success(function (data) {
             d.resolve(data);
         });
 
-        q.error(function (err) {
-            d.reject(err);
+        q.error(function (resp) {
+            d.reject(resp.error);
         });
 
         return d.promise;
