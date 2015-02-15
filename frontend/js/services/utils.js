@@ -3,12 +3,18 @@
 
 angular.module('MomAndPop').service('utils', function () {
     this.pathJoin = function () {
-        var components = [];
-        components = components.concat(components, _.map(arguments, function (node) {
-            return node && node.split('/');
-        }));
+        var url = ''
+        _.forEach(arguments, function (str) {
+            if(str.substr(-1) == '/') {
+                str = str.substr(0, str.length - 1);
+            }
 
-        return components.join('/');
+            if (url)
+                url += '/';
+
+            url += str;
+        })
+        return url;
     };
 });
 
