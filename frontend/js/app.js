@@ -6,6 +6,7 @@ var app = angular
         'ngRoute',
         'ngTouch',
         'ngResource',
+        'ngStorage',
         'ui.bootstrap',
         'MomAndPop.controllers',
         'MomAndPop.config'
@@ -14,7 +15,7 @@ var app = angular
         $routeProvider
             .when('/',{
                 templateUrl: 'views/login.html',
-                controller: 'loginCtrl'
+                controller: 'signInCtrl'
             })
             .when('/home', {
                 redirectTo: '/individual-home'
@@ -83,6 +84,10 @@ var app = angular
                 templateUrl: 'views/reset-password-step-2.html',
                 controller:'resetPasswordStepTwoCtrl'
             })
+            .when('/logout',{
+                template: '',
+                controller:'logoutCtrl'
+            })
             .otherwise({
                 redirectTo: '/'
             });
@@ -123,33 +128,34 @@ app.run(['$rootScope', '$location', '$window', '$log', function ($rootScope, $lo
 
 
 // Global page controller
-app.controller('page', ['$rootScope', '$scope', '$http', '$modal', '$location', function ($rootScope, $scope,  $http, $modal, $location) {
+app.controller('page', [
+    '$rootScope',
+    '$scope',
+    '$http',
+    '$modal',
+    '$location',
+    'user',
+function ($rootScope, $scope,  $http, $modal, $location, user) {
     document.body.setAttribute('ontouchstart', '');
+
     $scope.global = {
         title: 'Mom & Pop Project',
-        userProfile: 'unauthorized.json',
         headless: true
     };
 
-    $scope.loggedIn = function (userProfile) {
-        return (userProfile === 'unauthorized.json') || !userProfile ||
-            ($rootScope.login && !(userProfile && $rootScope.login !== userProfile));
+    $scope.loggedIn = function () {
+        return !!user.getUser();
     };
 
     $scope.resetGlobal = function (options) {
         options = options || {};
-        if (!$scope.loggedIn(options.userProfile)) {
-            $location.path('/');
-            return;
-        }
 
         $scope.global.headless = options.headless || false;
         $scope.global.showHeader = !$scope.global.headless;
         $scope.global.back = options.back || '';
         $scope.global.menuOpened = false;
-        if (options.userProfile) {
-            $scope.global.userProfile = options.userProfile;
-        }
+
+        $scope.global.user = user.getUser();
 
         if (options.title) {
             $scope.global.title = options.title;
@@ -157,24 +163,17 @@ app.controller('page', ['$rootScope', '$scope', '$http', '$modal', '$location', 
         dismissModal();
     };
 
-    $scope.$watch('global.userProfile', function (data) {
-        $http.get('data/' + data).success(function (data) {
-            $scope.global.user = data;
-        });
-    }, true);
-
     $scope.getHome = function () {
         var profile = $scope.global.user || {};
         return profile.home || '/';
     };
 
     $scope.openMenu = function () {
-        if (!$scope.global.headless && $rootScope.login) {
+        if (!$scope.global.headless && $rootScope.loggedIn()) {
             $scope.global.menuOpened = true;
         }
     };
 
-    $rootScope.login = false;
     $rootScope.showMenu = false;
 
     var modalInstance = null;
@@ -183,6 +182,7 @@ app.controller('page', ['$rootScope', '$scope', '$http', '$modal', '$location', 
             modalInstance.dismiss();
         }
     }
+
     $rootScope.showInformation = function (text) {
         dismissModal();
         modalInstance = $modal.open({
