@@ -9,6 +9,7 @@ app.use('/css', express.static(path.join(PROJECT_DIR, '/css')) );
 app.use('/views', express.static(path.join(PROJECT_DIR, '/views')) );
 app.use('/partials', express.static(path.join(PROJECT_DIR, '/partials')) );
 app.use('/i', express.static(path.join(PROJECT_DIR, '/i')) );
+app.use('/data', express.static(path.join(PROJECT_DIR, '/data')) );
 
 app.get('/', function (req, res) {
     console.log('REQUESTING index.html');
