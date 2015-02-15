@@ -13,7 +13,12 @@ var OUTPUT_JS = path.join(OUTPUT, 'js');
 gulp.task('default', ['third-parties', 'build', 'templates', 'static']);
 
 gulp.task('build', function () {
-    gulp.src(['frontend/js/**/*.js', '!frontend/js/third-parties/**/*.js'])
+    gulp.src([
+        'frontend/js/app.js',
+        'frontend/js/services/**/*.js',
+        'frontend/js/**/*.js',
+        '!frontend/js/third-parties/**/*.js'])
+
         .pipe(jshint())
         .pipe(jshint.reporter('default'))
         .pipe(concat('app.js'))
