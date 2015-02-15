@@ -36,8 +36,6 @@ function ($scope, $location, $rootScope, $log, formUtils) {
         }
     };
 
-    // reset modal
-    //signUpUtil($scope, $location, $rootScope);
     $scope.submit = function () {
         $log.log('Submitting..');
 
@@ -67,9 +65,10 @@ function ($scope, $location, $rootScope, $log, formUtils) {
 
         $scope.afterClickRegister = true;
         return false;
-    }
+    };
+    $scope.looseFocus = formUtils.looseFocus;
 
-    // focus input
+    // TODO: move
     $scope.focusInput = function () {
         // if just right after click register, clear error message.
         if ($scope.afterClickRegister) {
@@ -80,7 +79,6 @@ function ($scope, $location, $rootScope, $log, formUtils) {
             $("input").removeClass('invalid');
         }
     };
-    $scope.looseFocus = formUtils.looseFocus;
 }]);
 
 })();
