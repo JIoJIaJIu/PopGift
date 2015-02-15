@@ -64,7 +64,7 @@ function ($scope, $location, $rootScope, $log, formUtils) {
 
         $scope.afterClickRegister = true;
         return false;
-    };
+    }
     $scope.looseFocus = formUtils.looseFocus; 
 
     // TODO: move

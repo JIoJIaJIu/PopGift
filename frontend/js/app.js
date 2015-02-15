@@ -227,7 +227,7 @@ app.controller('page', ['$rootScope', '$scope', '$http', '$modal', '$location', 
     function setHeight($rightSidebar) {
         var new_height = $(this).height();
         // if mobileSafari add +60px
-        if (typeof mobileSafari === 'string'){ new_height += 60 };
+        if (typeof mobileSafari === 'string'){ new_height += 60; }
         $rightSidebar.css('height', new_height);
     }
 

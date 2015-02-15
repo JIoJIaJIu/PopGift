@@ -129,7 +129,7 @@ angular.module('MomAndPop').service('formUtils', ['$log', function ($log) {
             fullName += $scope.lastName;
         }
         return fullName;
-    }
+    };
 }]);
 
 })();

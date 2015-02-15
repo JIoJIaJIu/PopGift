@@ -511,9 +511,9 @@ function checkConfirmPassword($scope) {
     // check  confirm password matches password
     $scope.checkConfirmPassword = function () {
         return  $scope.password === $scope.confirmPassword &&
-            ($scope.password !== undefined )
-            && ($scope.confirmPassword !== undefined )
-            && ( $scope.password.length > 0 && $scope.confirmPassword.length > 0 );
+            ($scope.password !== undefined) &&
+            ($scope.confirmPassword !== undefined) &&
+            ($scope.password.length > 0 && $scope.confirmPassword.length > 0);
     };
 }
 
@@ -527,7 +527,7 @@ function signUpUtil($scope, $location, $rootScope) {
             $scope.isAcceptTerms = false;
         } else {
             $scope.isAcceptTerms = true;
-        };
+        }
     };
 
     // set upload browser button and upload file text field.
@@ -563,7 +563,7 @@ function signUpUtil($scope, $location, $rootScope) {
             if ($scope.signUpForm[ item.fieldName ] &&
                 $scope.signUpForm[ item.fieldName ].$error.required) {
                 requiredFieldNotFilled.push(item.describeName);
-                $("input[name=" + item.fieldName + "]").addClass('invalid')
+                $("input[name=" + item.fieldName + "]").addClass('invalid');
             }
         });
 
@@ -663,7 +663,7 @@ function signUpUtil($scope, $location, $rootScope) {
         if ($scope.signUpForm.mail.$valid) {
             $("input[name='mail']").removeClass('invalid');
         }
-    })
+    });
 }
 
 
@@ -713,7 +713,7 @@ appControllers.controller("resetPasswordCtrl", function ($scope, $location, $roo
         $scope.showError = false;
         $scope.validateErrorMsg = "";
         // clear all warning border
-        $(".form-group").removeClass('invalid')
+        $(".form-group").removeClass('invalid');
     };
 
     $scope.$watch('$scope.resetPasswordForm.mail.$invalid', function () {
@@ -721,7 +721,7 @@ appControllers.controller("resetPasswordCtrl", function ($scope, $location, $roo
         if ($scope.resetPasswordForm.mail.$valid) {
             $(".form-group").removeClass('invalid');
         }
-    })
+    });
 });
 
 

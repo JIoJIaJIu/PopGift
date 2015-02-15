@@ -13,7 +13,7 @@ function ($log) {
                 FB.login();
             }
         });
-    }
+    };
 }]);
 
 })();

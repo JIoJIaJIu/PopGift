@@ -45,13 +45,13 @@ function ($scope, $location, $rootScope, $log, formUtils, signUp, facebookAPI, t
         $log.info('login');
         facebookAPI.connect();
         $log.info('finished');
-    }
+    };
 
     $scope.authTw = function () {
         $log.info('Twitter login');
         twitterAPI.connect();
-        $log.info('login success')
-    }
+        $log.info('login success');
+    };
 
     $scope.submit = function () {
         $log.debug('Submitting..');
@@ -103,7 +103,7 @@ function ($scope, $location, $rootScope, $log, formUtils, signUp, facebookAPI, t
 
         $scope.afterClickRegister = true;
         return true;
-    };
+    }
     $scope.looseFocus = formUtils.looseFocus;
 
     // TODO: move

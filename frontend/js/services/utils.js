@@ -3,7 +3,7 @@
 
 angular.module('MomAndPop').service('utils', function () {
     this.pathJoin = function () {
-        var url = ''
+        var url = '';
         _.forEach(arguments, function (str) {
             if(str.substr(-1) == '/') {
                 str = str.substr(0, str.length - 1);
@@ -13,7 +13,7 @@ angular.module('MomAndPop').service('utils', function () {
                 url += '/';
 
             url += str;
-        })
+        });
         return url;
     };
 
@@ -91,7 +91,7 @@ angular.module('MomAndPop').service('utils', function () {
         } while (i < input.length);
 
         return output;
-    }
+    };
 });
 
 })();

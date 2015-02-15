@@ -51,7 +51,7 @@ var config = {
      **/
 
     SESSION_TOKEN_REFRESH_PERIOD: null
-}
+};
 
 angular.module('MomAndPop.config', []).constant('CONFIG', config);
 
