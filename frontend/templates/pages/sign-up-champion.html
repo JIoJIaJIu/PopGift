@@ -34,7 +34,7 @@
                            data-ng-model="confirmPassword" placeholder="Confirm your new password" autocomplete="off"
                            required/>
                     <!-- if confirm password match password, show tick around green circle -->
-                    <div data-ng-show="checkConfirmPassword()" class="circle vertical-align-subs">
+                    <div data-ng-show="matchPasswords" class="circle vertical-align-subs">
                         <div class="icon sprite sprite-white-tick"></div>
                     </div>
                 </div>
@@ -76,10 +76,9 @@
                 </div>
                 <!-- register button -->
                 <div class="controls">
-                    <input type="submit" class="hide">
-                    <a href="javascript:;" class="btn btn-medium btn-primary btn-register"
+                    <input type="submit" class="btn btn-medium btn-primary btn-register"
                        data-ng-class="{'btn-disable':isDisableRegister()}"
-                       data-ng-disabled="isDisableRegister()" data-ng-click="validate();">Register</a>
+                       data-ng-disabled="isDisableRegister()" value="Register"</input>
                 </div>
             </form>
 
