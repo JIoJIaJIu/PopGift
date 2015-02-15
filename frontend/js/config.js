@@ -28,7 +28,7 @@ var config = {
      * Required. {String}
      *
      **/
-    FACEBOOK_APP_ID: '',
+    FACEBOOK_APP_ID: '319366818273535',
 
     /**
      * This is Twitter consumer key used for OAuth2.

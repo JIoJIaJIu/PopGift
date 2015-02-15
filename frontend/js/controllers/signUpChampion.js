@@ -8,7 +8,9 @@ angular.module('MomAndPop').controller('signUpChampionCtrl', [
     '$log',
     'formUtils',
     'signUp',
-function ($scope, $location, $rootScope, $log, formUtils, signUp) {
+    'facebookAPI',
+    'twitterAPI',
+function ($scope, $location, $rootScope, $log, formUtils, signUp, facebookAPI, twitterAPI) {
 
     $scope.resetGlobal({
         headless: true
@@ -38,6 +40,18 @@ function ($scope, $location, $rootScope, $log, formUtils, signUp) {
             describeName: 'Confirm Password'
         }
     };
+
+    $scope.authFb = function () {
+        $log.info('login');
+        facebookAPI.connect();
+        $log.info('finished');
+    }
+
+    $scope.authTw = function () {
+        $log.info('Twitter login');
+        twitterAPI.connect();
+        $log.info('login success')
+    }
 
     $scope.submit = function () {
         $log.debug('Submitting..');
