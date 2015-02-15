@@ -98,6 +98,26 @@ angular.module('MomAndPop').service('formUtils', function () {
             }
         }
     };
+
+    /**
+     * @param {Object} $scope
+     *   @key {String} firstName
+     *   @key {String} lastName;
+     *
+     **/
+
+    this.getFullName = function ($scope) {
+        var fullName = '';
+        if ($scope.firstName)
+            fullName += $scope.firstName;
+
+        if ($scope.lastName) {
+            if (fullName)
+                fullName += ' ';
+
+            fullName += $scope.lastName;
+        }
+    }
 });
 
 })();

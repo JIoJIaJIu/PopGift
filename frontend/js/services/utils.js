@@ -6,10 +6,10 @@ angular.module('MomAndPop').service('utils', function () {
         var components = [];
         components = components.concat(components, _.map(arguments, function (node) {
             return node.split('/');
-        });
+        }));
 
         return components.join('/');
-    }
+    };
 });
 
 })();
