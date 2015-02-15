@@ -3,15 +3,18 @@
 angular.module('MomAndPop').service('signUp', [
     '$http',
     'MomAndPop.config',
-function ($resource, config) {
-    var URL = [config.REST_SERVICES_BASE_URL, 'register'].join('/');
+    'utils',
+function ($http, config, utils) {
+    var URL = utils.pathJoin(config.REST_SERVICES_BASE_URL, 'register');
 
     this.champion = function (params) {
         var q = request({
-           accoutType: ''
+           accoutType: 'CHAMPION',
            name: params.name,
            email: params.email
         });
+
+        return q;
 
         q.success(function () {
         });
@@ -22,15 +25,17 @@ function ($resource, config) {
 
     this.founder = function (username, password) {
         var q = requiest({
-            accoutType; '',
+            accoutType: 'FOUNDER',
             name: params.name,
             email: params.email
         });
+
+        return q;
     };
 
     /**
      * @param {Object} params
-     *   @key {String} accountType
+     *   @key {String} accountType ['CHAMPION', 'FOUNDER']
      *   @key {String} name
      *   @key {String} password
      *   @key {String} interestedOfferCategory
@@ -43,6 +48,6 @@ function ($resource, config) {
     function request (params) {
         return $http.post(URL, params);
     }
-});
+}]);
 
 })();
