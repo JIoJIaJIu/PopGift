@@ -14,8 +14,6 @@ gulp.task('default', ['third-parties', 'build', 'templates', 'static']);
 
 gulp.task('build', function () {
     gulp.src([
-        'frontend/js/app.js',
-        'frontend/js/services/**/*.js',
         'frontend/js/**/*.js',
         '!frontend/js/third-parties/**/*.js'])
 
