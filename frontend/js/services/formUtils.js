@@ -1,6 +1,7 @@
 (function (undefined) {
 
-angular.module('MomAndPop').service('formUtils', function () {
+angular.module('MomAndPop').service('formUtils', ['$log', function ($log) {
+    var self = this;
     /**
      * @param {Object] $scope
      *   @key {String} validateErrorMsg
@@ -11,13 +12,14 @@ angular.module('MomAndPop').service('formUtils', function () {
      */
 
     this.validateRequired = function ($scope, form) {
-        $scope.validateErrorMsg = null;
+        $scope.validateErrorMsg = '';
 
         var requiredFieldNotFilled = [];
-        $.each($scope.requiredFields, function (index, item) {
+        _.forEach($scope.requiredFields, function (item, index) {
             if (form[ item.fieldName ] && form[ item.fieldName ].$error.required) {
-                    requiredFieldNotFilled.push(item.describeName);
-                    $("input[name=" + item.fieldName + "]").addClass('invalid');
+                requiredFieldNotFilled.push(item.describeName);
+                $log.debug('formUtils service:: empty required field', item.fieldName);
+                $("input[name=" + item.fieldName + "]").addClass('invalid');
             }
         });
 
@@ -38,7 +40,9 @@ angular.module('MomAndPop').service('formUtils', function () {
             }
         }
 
-        return !!$scope.showError;
+        $log.debug('formUtils service:: validateRequired', !$scope.showError);
+
+        return !$scope.showError;
     };
 
     /**
@@ -50,18 +54,19 @@ angular.module('MomAndPop').service('formUtils', function () {
      * @return {Boolean} match
      */
     this.matchPasswords = function ($scope) {
-        $scope.checkConfirmPassword = function () {
+        if ($scope.password === undefined && $scope.configPassword === undefined)
+            return true;
 
-            var match = $scope.password === $scope.confirmPassword &&
-                ($scope.password !== undefined ) &&
-                ($scope.confirmPassword !== undefined ) &&
-                ( $scope.password.length > 0 && $scope.confirmPassword.length > 0 );
+        var match = $scope.password === $scope.confirmPassword &&
+            ( $scope.password.length > 0 && $scope.confirmPassword.length > 0 );
 
-            if (!match) {
-                $scope.validateErrorMsg += 'Confirm password is not same as password.';
-                $scope.showError = true;
-            }
-        };
+        $log.debug('formUtils service:: match passwords', match);
+
+        if (!match) {
+            $scope.validateErrorMsg = [$scope.validateErrorMsg, 'Confirm password is not same as password.'].join(' ');
+            $scope.showError = true;
+        }
+        return match;
     };
 
     /**
@@ -71,16 +76,18 @@ angular.module('MomAndPop').service('formUtils', function () {
      *   @key {Boolean} showError
      *   @key {String} validateErrorMsg
      *   @key {Object} requiredFields
-     * @param {Object} form 
+     *   @key {Boolean} matchPasswords
+     * @param {Object} form
      */
     this.looseFocus = function ($event, $scope, form) {
         var fieldName = $($event.target).attr('name');
         $scope.showError = false;
+        $scope.validateErrorMsg = '';
 
         // check required rule
-        if ($scope.signUpForm[ fieldName ].$error.required) {
+        if (form[ fieldName ].$error.required) {
             $scope.showError = true;
-            $scope.validateErrorMsg = $scope.requiredFields[fieldName].describeName + " is required";
+            $scope.validateErrorMsg = [$scope.validateErrorMsg, $scope.requiredFields[fieldName].describeName + ' is required.'].join(' ');
             $("input[name=" + fieldName + "]").addClass('invalid');
         } else {
             $("input[name=" + fieldName + "]").removeClass('invalid');
@@ -96,6 +103,10 @@ angular.module('MomAndPop').service('formUtils', function () {
             } else if (form.mail.$valid) {
                 $("input[name='mail']").removeClass('invalid');
             }
+        }
+
+        if (fieldName === 'confirmPassword') {
+            $scope.matchPasswords = self.matchPasswords($scope);
         }
     };
 
@@ -117,7 +128,8 @@ angular.module('MomAndPop').service('formUtils', function () {
 
             fullName += $scope.lastName;
         }
+        return fullName;
     }
-});
+}]);
 
 })();
