@@ -56,6 +56,7 @@ gulp.task('static', function () {
 });
 
 gulp.task('watch', function () {
-    gulp.watch('frontend/templates/**.html', ['templates']);
+    gulp.watch('frontend/index.html', ['templates']);
+    gulp.watch('frontend/templates/**/*.html', ['templates']);
     gulp.watch('frontend/js/**/*.js', ['build']);
 });
