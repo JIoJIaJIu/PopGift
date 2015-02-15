@@ -48,6 +48,44 @@ function ($log, $q, utils, CONFIG) {
 
         return d;
     };
+
+    /**
+     * @param {String} type, required ['Facebook', 'Twitter', 'LinkedIn']
+     * @param {String} token, required, base64
+     */
+    this.loginWithSocial = function (type, token) {
+        var d = $.defer();
+
+        if (!~['Facebook', 'Twitter', 'LinkedIn'].indexOf(type)) {
+            $log.warn('User service::loginWithSocial:: wrong type', type);
+            d.reject('Wrong type ' + type);
+            return d.promise;
+        }
+
+        if (!token) {
+            $log.warn('User service::loginWithSocial:: should poind token');
+            d.reject('Should point token');
+            return d.promise;
+        }
+
+        var q = $http.post(LOGIN_URL, {
+            type: type
+        }, {
+            headers: {
+                'Authorization': 'Basic ' + token
+            }
+        });
+
+        q.success(function (data) {
+            d.resolve(data);
+        });
+
+        q.error(function (err) {
+            d.reject(err);
+        });
+
+        return d.promise;
+    };
 }]);
 
 })();
