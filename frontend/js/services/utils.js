@@ -17,6 +17,7 @@ angular.module('MomAndPop').service('utils', function () {
         return url;
     };
 
+<<<<<<< HEAD
     this.randomString = function () {
         var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
         var string_length = 25;
@@ -103,6 +104,8 @@ angular.module('MomAndPop').service('utils', function () {
 
         return output;
     };
+=======
+>>>>>>> 57123ab308a57f5cc2564e92fbda854238d38cd2
 });
 
 })();

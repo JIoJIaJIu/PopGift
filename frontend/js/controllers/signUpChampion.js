@@ -71,7 +71,7 @@ function ($scope, $location, $rootScope, $log, formUtils, signUp, facebookAPI, t
         });
 
         q.then(function () {
-            $log.debug('Successuf registered');
+            $log.debug('Successful registered');
             $location.path('/');
         }, function (err) {
             $log.debug('Request error', err);

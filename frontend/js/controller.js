@@ -43,40 +43,6 @@ appControllers.controller('menu', ['$scope', '$http', function ($scope, $http) {
 }]);
 
 
-// Home page controller
-appControllers.controller('homePage', ['$scope', '$http', function ($scope, $http) {
-    $scope.resetGlobal({
-        title: 'My Founder$hares',
-        userProfile: 'user.json'
-    });
-
-    $http.get('data/businesses.json').success(function (data) {
-        $scope.businesses = data.businesses;
-    });
-
-    $scope.setOrder = function (order) {
-        $scope.order = order;
-        var field, orderMore = 1;
-        switch (order.type) {
-            case 'name-asc':
-                field = 'name';
-                break;
-            case 'name-desc':
-                field = 'name';
-                orderMore = -1;
-                break;
-            case 'amount':
-                field = 'amount';
-                break;
-        }
-        $scope.businesses.sort(function (b1, b2) {
-            if (b1[field] < b2[field]) { return -orderMore; }
-            if (b1[field] > b2[field]) { return orderMore; }
-            return '';
-        });
-    };
-}]);
-
 // Search controller
 appControllers.controller('search', ['$scope', '$location', function ($scope, $location) {
     $scope.mode = 'order';
@@ -455,44 +421,6 @@ appControllers.controller('modalCtrl', function ($scope, $modalInstance, text) {
 
     $scope.no = function () {
         $modalInstance.dismiss();
-    };
-});
-
-//Login Controller
-appControllers.controller("loginCtrl", function ($scope, $location, $rootScope) {
-    //Validate
-    $scope.resetGlobal({
-        headless: true,
-        userProfile: 'unauthorized.json'
-    });
-
-    $scope.validate = function () {
-        if (!$scope.username || !$scope.password) {
-            $scope.validation = false;
-        } else {
-            $scope.validation = ($scope.username && $scope.password === '123456');
-        }
-
-        if ($scope.validation) {
-            $rootScope.login = $scope.username === 'buz' ? 'employee.json' : 'user.json';
-            $location.path($scope.username === 'buz' ? '/business-home' : '/individual-home');
-        } else {
-            $scope.showError = true;
-        }
-    };
-
-    // clear validation error, while focus  in input boxes;
-    $scope.clearValidateError = function () {
-        $scope.showError = false;
-    };
-
-    $scope.toggleRememberMe = function () {
-        if ($scope.isRememberMe) {
-            $scope.isRememberMe = false;
-        }
-        else {
-            $scope.isRememberMe = true;
-        }
     };
 });
 
