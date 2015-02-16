@@ -3,43 +3,61 @@
 angular.module('MomAndPop').service('twitterAPI', [
     '$log',
     '$http',
-function ($log, $http) {
+    'utils',
+function ($log, $http, utils) {
     $log.info('Twitter oauth service');
     this.connect = function () {
         $log.info('oauth tw starting');
-        var req = {
+        /* Creating a signature for Twitter API */
+        var d = new Date();
+        var timestamp = d.getTime() / 1000;
+        timestamp = Math.round(timestamp);
+        var nonce = utils.randomString();
+        var oauth_token = '208190851-OmkDCd0K38aitHGmfm7ZRz0ergoBqor4xtjkdzMd';
+        oauth_token = encodeURIComponent(oauth_token);
+        nonce = btoa(nonce);
+        nonce = encodeURIComponent(nonce);
+        $log.info(nonce);
+        $log.info(oauth_token);
+        $log.info(timestamp);
+        var config = {
             method: 'POST',
-            url: 'https://api.twitter.com/oauth2/token',
-            headers: [
-                {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                }, {
-                    'Authorization': 'Basic dFJ6anIzZGcyUGdDUXcyNUMwVXBramIxdTp3N2xlWlR1RmVBdzZ1MUZzWkRoTDFzd1BvNmxqb1ZTWW9xNFFkZDdLcEdNbU9mR1lMQQ=='
-                }
-            ],
-            data: {
-                body: 'grant_type=client_credentials'
+            url: 'https://api.twitter.com/1/statuses/update.json',
+            params: {
+                include_entities: 'true',
+                oauth_consumer_key: 'tRzjr3dg2PgCQw25C0Upkjb1u',
+                oauth_nonce: nonce,
+                oauth_signature_method: 'HMAC-SHA1',
+                oauth_timestamp: timestamp,
+                oauth_token: oauth_token,
+                oauth_version: '1.0'
+            },
+            headers: {
+                'Access-Control-Allow-Origin': 'https://api.twitter.com/'
             }
         };
-        $http(req).success(function () { $log.info('twitter loging success'); }).error(function () { $log.info('twitter loging error'); });
-        /*
-        var url = 'https://api.twitter.com/oauth2/token';
-        var data = 'grant_type=client_credentials';
-        var config = {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-            'Authorization': 'Basic dFJ6anIzZGcyUGdDUXcyNUMwVXBramIxdTp3N2xlWlR1RmVBdzZ1MUZzWkRoTDFzd1BvNmxqb1ZTWW9xNFFkZDdLcEdNbU9mR1lMQQ=='
-        }
-        $http.post(url, data, config)
-        */
-        /*
-        var xhr = new XMLHttpRequest();
-        var params = '';
-        var body = 'grant_type=client_credentials';
-        xhr.open('POST', 'https://api.twitter.com/oauth2/token', true);
-        xhr.setRequestHeader('Authorization', 'Basic dFJ6anIzZGcyUGdDUXcyNUMwVXBramIxdTp3N2xlWlR1RmVBdzZ1MUZzWkRoTDFzd1BvNmxqb1ZTWW9xNFFkZDdLcEdNbU9mR1lMQQ==')
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
-        xhr.send(body);
-        $log.info('oauth tw ending');
+
+        $http(config).
+            success(function (data, status, headers, config) {
+                $log.info('Signature success');
+            }).
+            error(function (data, status, headers, config) {
+                $log.info('Signature error');
+            });
+        /* Creating a authorizing request *
+        url = '';
+        data = '';
+        var DST = 'OAuth oauth_consumer_key="tRzjr3dg2PgCQw25C0Upkjb1u", oauth_nonce="LQynlWCLwuVxExMdMOGN2d0TFSpNJrEp", oauth_signature="", oauth_signature_method="HMAC-SHA1", oauth_timestamp="' + timestamp + '", oauth_token="208190851-OmkDCd0K38aitHGmfm7ZRz0ergoBqor4xtjkdzMd", oauth_version="1.0"';
+        config = {
+            headers: DST;
+        };
+        $http.post(url, data, config).
+            success(function (data, status, headers, config) {
+                $log.info('loging success');
+            }).
+            error(function (data, status, headers, config) {
+                $log.info('logging error');
+            });
         */
     };
 }]);
