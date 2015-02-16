@@ -44,21 +44,6 @@ function ($log, $http, utils) {
             error(function (data, status, headers, config) {
                 $log.info('Signature error');
             });
-        /* Creating a authorizing request *
-        url = '';
-        data = '';
-        var DST = 'OAuth oauth_consumer_key="tRzjr3dg2PgCQw25C0Upkjb1u", oauth_nonce="LQynlWCLwuVxExMdMOGN2d0TFSpNJrEp", oauth_signature="", oauth_signature_method="HMAC-SHA1", oauth_timestamp="' + timestamp + '", oauth_token="208190851-OmkDCd0K38aitHGmfm7ZRz0ergoBqor4xtjkdzMd", oauth_version="1.0"';
-        config = {
-            headers: DST;
-        };
-        $http.post(url, data, config).
-            success(function (data, status, headers, config) {
-                $log.info('loging success');
-            }).
-            error(function (data, status, headers, config) {
-                $log.info('logging error');
-            });
-        */
     };
 }]);
 
