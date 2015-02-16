@@ -11,6 +11,7 @@ angular.module('MomAndPop').controller('signUpChampionCtrl', [
     'facebookAPI',
     'twitterAPI',
 function ($scope, $location, $rootScope, $log, formUtils, signUp, facebookAPI, twitterAPI) {
+    var image = null;
 
     $scope.resetGlobal({
         headless: true
@@ -61,23 +62,36 @@ function ($scope, $location, $rootScope, $log, formUtils, signUp, facebookAPI, t
             return;
         }
 
-        // See NOTICE #1
-        var q = signUp.champion({
-            firstName: $scope.firstName,
-            lastName: $scope.lastName,
-            email: $scope.mail,
-            password: $scope.password,
-            interest: $scope.interest
-        });
+        if (image) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                request({ blob: reader.result, fileName: image.name});
+            }
+            reader.readAsBinaryString(image);
+            return;
+        }
 
-        q.then(function () {
-            $log.debug('Successful registered');
-            $location.path('/');
-        }, function (err) {
-            $log.debug('Request error', err);
-            $scope.validateErrorMsg = err;
-            $scope.showError = true;
-        });
+        request();
+
+        function request (blob) {
+            // See NOTICE #1
+            var q = signUp.champion({
+                firstName: $scope.firstName,
+                lastName: $scope.lastName,
+                email: $scope.mail,
+                password: $scope.password,
+                interest: $scope.interest
+            }, blob);
+
+            q.then(function () {
+                $log.debug('Successful registered');
+                $location.path('/');
+            }, function (err) {
+                $log.debug('Request error', err);
+                $scope.validateErrorMsg = err;
+                $scope.showError = true;
+            });
+        }
     };
 
     $scope.toggleAcceptTerms = function () {
@@ -116,6 +130,19 @@ function ($scope, $location, $rootScope, $log, formUtils, signUp, facebookAPI, t
             // clear all warning border
             $("input").removeClass('invalid');
         }
+    };
+
+
+    // set upload browser button and upload file text field.
+    var btn = document.getElementById("uploadBtn");
+    btn.onchange = function () {
+        document.getElementById("uploadFile").value = this.value;
+        image = btn.files[0];
+        var path = $scope.fileName = this.value;
+        // just show file name
+        var fileName = path.replace(/.*\\/, '');
+        fileName = fileName.replace(/.*\//, '');
+        document.getElementById("uploadFile").value = fileName;
     };
 }]);
 

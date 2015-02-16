@@ -7,7 +7,6 @@ angular.module('MomAndPop').controller('signInCtrl', [
     '$rootScope',
     'user',
 function ($scope, $log, $location, $rootScope, user) {
-    console.log('sess', user.getSessionToken());
     if (user.getSessionToken()) {
         $log.debug('User has been authorized');
         loadUser();
@@ -25,7 +24,7 @@ function ($scope, $log, $location, $rootScope, user) {
             return;
         }
 
-        var q = user.loginWithPassword($scope.email, $scope.password);
+        var q = user.loginWithPassword($scope.email, $scope.password, $scope.isRememberMe);
         q.then(function () {
             loadUser();
         }, function (error) {
