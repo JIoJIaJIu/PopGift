@@ -130,6 +130,31 @@ angular.module('MomAndPop').service('formUtils', ['$log', function ($log) {
         }
         return fullName;
     };
+
+    /**
+     * @param {String} boundary
+     * @param {Array} of {Object} data
+     *   @item {Object) item
+     *      @key {Array} of {String} headers
+     *      @key {String} data
+     */
+
+    this.generateMultipartPayload = function (boundary, data) {
+        var msg = '';
+        _.forEach(data, function (item) {
+            msg += '--' + boundary + '\r\n';
+            _.forEach(item.headers, function (header) {
+                msg += header + '\r\n';
+            });
+
+            msg += '\r\n' + item.data + '\r\n';
+        });
+
+        msg += '--' + boundary + '--';
+
+        $log.debug('formUtils service::generateMultipartPayload:: \n' + msg);
+        return msg;
+    };
 }]);
 
 })();

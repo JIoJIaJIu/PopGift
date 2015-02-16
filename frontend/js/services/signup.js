@@ -21,10 +21,17 @@ angular.module('MomAndPop').service('signUp', [
     '$log',
     '$q',
     'CONFIG',
-function ($http, utils, $log, $q, config) {
-    var URL = utils.pathJoin(config.REST_SERVICE_BASE_URL, 'regist');
+    'formUtils',
+function ($http, utils, $log, $q, config, formUtils) {
+    var URL = utils.pathJoin(config.REST_SERVICE_BASE_URL, 'register');
 
-    this.champion = function (params) {
+    /**
+     * @param {Object} params
+     * @param {Object} image
+     *   @key {String} fileName
+     *   @key {Blob} blob
+     */
+    this.champion = function (params, image) {
         var d = $q.defer();
 
         if (!validate(params)) {
@@ -33,16 +40,41 @@ function ($http, utils, $log, $q, config) {
             return;
         }
 
+        var boundary = 'MomAndPopBoundary81765';
         var q = $http.post(URL, {
             accountType: 'CHAMPION',
             firstName: params.firstName,
             lastName: params.lastName,
             email: params.email,
             password: params.password,
-            interestedOfferCategory: params.interest || null
+            //interestedOfferCategory: params.interest || null
         }, {
+            transformRequest: function (params) {
+                x = image;
+
+                var data = [{
+                    headers: [
+                        'Content-Type: application/json; charset=utf-8',
+                        'Content-Disposition: form-data; name="registration"'
+                    ],
+
+                    data: JSON.stringify(params)
+                }]
+
+                if (image) {
+                    data.push({
+                        headers: [
+                            'Content-Type: image/jpeg',
+                            'Content-Disposition: form-data; name="profileImage"; filename="' + image.fileName + '"'
+                        ],
+
+                        data: image.blob
+                    });
+                }
+                return formUtils.generateMultipartPayload(boundary, data);
+            },
             headers: {
-                //'Content-type': 'multipart/form-data'
+                'Content-type': 'multipart/form-data; boundary=' + boundary,
             }
         });
 

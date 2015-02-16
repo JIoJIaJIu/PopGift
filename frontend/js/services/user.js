@@ -17,10 +17,11 @@ function ($log, $q, $http, $storage, utils, CONFIG) {
     /**
      * @param {String} email, required
      * @param {String} password, required
+     * @param {Boolean} remember
      * @return {Object} promise
      *
      */
-    this.loginWithPassword = function (email, password) {
+    this.loginWithPassword = function (email, password, remember) {
         var d = $q.defer();
 
         if (!email) {
@@ -36,9 +37,10 @@ function ($log, $q, $http, $storage, utils, CONFIG) {
         }
 
         var credentials = btoa([email, password].join(':'));
+        var authHeader = 'Basic ' + credentials;
         var q = $http.post(LOGIN_URL, null, {
             headers: {
-                'Authorization': 'Basic ' + credentials
+                'Authorization': authHeader
             },
             params: {
                 type: 'Password'
@@ -46,7 +48,9 @@ function ($log, $q, $http, $storage, utils, CONFIG) {
         });
 
         q.success(function (data) {
-            $storage.sessionToken = sessionToken = data.sessionToken;
+            sessionToken = data.sessionToken;
+            if (remember)
+                $storage.sessionToken = sessionToken;
             d.resolve(data);
         });
 
@@ -76,15 +80,17 @@ function ($log, $q, $http, $storage, utils, CONFIG) {
             return d.promise;
         }
 
+        var authHeader = 'Basic ' + token;
         var q = $http.post(LOGIN_URL, {
             type: type
         }, {
             headers: {
-                'Authorization': 'Basic ' + token
+                'Authorization': authHeader
             }
         });
 
         q.success(function (data) {
+            $http.defaults.headers.common.Authorization = authHeader; 
             d.resolve(data);
         });
 
@@ -102,6 +108,7 @@ function ($log, $q, $http, $storage, utils, CONFIG) {
     this.logout = function () {
         sessionToken = null;
         user = null;
+        $http.defaults.headers.common.Authorization = null; 
         delete $storage.sessionToken;
     };
 
@@ -124,13 +131,16 @@ function ($log, $q, $http, $storage, utils, CONFIG) {
             return d.promise;
         }
 
+     
+     var authHeader = 'Bearer ' + sessionToken;
         var q = $http.get(ME_URL, {
             headers: {
-                'Authorization': 'Bearer ' + sessionToken
+                'Authorization': authHeader
             }
         });
 
         q.success(function (data) {
+            $http.defaults.headers.common.Authorization = authHeader; 
             user = new User(data);
             d.resolve(user);
         });
@@ -157,6 +167,7 @@ function ($log, $q, $http, $storage, utils, CONFIG) {
      *   @key {String} firstName
      *   @key {String} lastName
      *   @key {String} email
+     *   @key {String} [picture];
      */
     function User (data) {
         this.id = data.id;
@@ -164,6 +175,7 @@ function ($log, $q, $http, $storage, utils, CONFIG) {
         this.lastName = data.lastName;
         this.email = data.email;
         this.name = [this.firstName, this.lastName].join(' ');
+        this.avatar = data.picture;
     }
 }]);
 
