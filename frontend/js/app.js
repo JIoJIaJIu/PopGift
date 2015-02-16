@@ -8,6 +8,7 @@ var app = angular
         'ngResource',
         'ngStorage',
         'ui.bootstrap',
+
         'MomAndPop.controllers',
         'MomAndPop.config'
     ])
@@ -28,9 +29,9 @@ var app = angular
                 templateUrl: 'views/details.html',
                 controller: 'detailsPage'
             })
-            .when('/redeem/:id/:redeemId', {
+            .when('/redeem/:id', {
                 templateUrl: 'views/redeem.html',
-                controller: 'redeemPage'
+                controller: 'championGiftCardRedeem'
             })
             .when('/privacy', {
                 templateUrl: 'views/textinfo.html',
@@ -95,24 +96,14 @@ var app = angular
 
 
 // Initialize the main module
-app.run(['$rootScope', '$location', '$window', '$log', function ($rootScope, $location, $window, $log) {
-    var config = angular.module('MomAndPop.config');
-    $log.info('FB init');
-    window.fbAsyncInit = function() {
-        FB.init({
-            appId      : '319366818273535',
-            xfbml      : true,
-            version    : 'v2.1'
-        });
-    };
-
-    (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
+app.run([
+    '$rootScope',
+    '$location',
+    '$window',
+    '$log',
+    'CONFIG',
+function ($rootScope, $location, $window, $log, CONFIG) {
+    initFacebook(CONFIG.FACEBOOK_APP_ID);
 /*
     $rootScope.location = $location;
     $rootScope.goto = function (path) {
@@ -126,6 +117,23 @@ app.run(['$rootScope', '$location', '$window', '$log', function ($rootScope, $lo
 */
 }]);
 
+function initFacebook (appId) {
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : appId,
+            xfbml      : true,
+            version    : 'v2.1'
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+}
 
 // Global page controller
 app.controller('page', [
