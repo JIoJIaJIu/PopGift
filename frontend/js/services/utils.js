@@ -17,6 +17,17 @@ angular.module('MomAndPop').service('utils', function () {
         return url;
     };
 
+    this.randomString = function () {
+        var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+        var string_length = 25;
+        var randomstring = '';
+        for (var i=0; i<string_length; i++) {
+            var rnum = Math.floor(Math.random() * chars.length);
+            randomstring += chars.substring(rnum,rnum+1);
+        }
+        return randomstring;
+    };
+
     this.base64Encode = function (input) {
         var output = "";
         var chr1, chr2, chr3 = "";
